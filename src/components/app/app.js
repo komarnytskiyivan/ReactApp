@@ -21,13 +21,15 @@ export default class App extends Component {
         {label:"React is", important:true, like:false, id:2},
         {label:"React is cool", important:true, like:false, id:3}
         ],
-        term:''
+        term:'',
+        filter:'all'
     };
     this.deleteItem = this.deleteItem.bind(this);
     this.addItem = this.addItem.bind(this);
     this.onToggleImportant = this.onToggleImportant.bind(this);
     this.onToggleLike = this.onToggleLike.bind(this);
     this.onUpdateSearch = this.onUpdateSearch.bind(this);
+    this.onFilterSelect = this.onFilterSelect.bind(this);
     }
     deleteItem(id){
         this.setState(({data}) => {
@@ -86,9 +88,19 @@ export default class App extends Component {
     onUpdateSearch(term){
         this.setState({term})
     }
+    filterPost(items, filter){
+        if (filter === 'like') {
+            return items.filter(item => item.like);
+        } else {
+            return items;
+        }
+    }
+    onFilterSelect(filter){
+        this.setState({filter})
+    }
     render(){
-        const {data, term} = this.state;
-        const visiblePosts =  this.searchPost(data, term);
+        const {data, term, filter} = this.state;
+        const visiblePosts =  this.filterPost(this.searchPost(data, term), filter) ;
         const liked = data.filter((item) => item.like).length;
         const allPosts = data.length;
         return (
@@ -101,7 +113,10 @@ export default class App extends Component {
                      <SearchPanel
                      onUpdateSearch={this.onUpdateSearch}
                      />
-                     <PostStatusFilter/>
+                     <PostStatusFilter
+                     filter={filter}
+                     onFilterSelect={this.onFilterSelect}
+                     />
                  </div>
                  <PostList 
                  posts = {visiblePosts}
