@@ -2,12 +2,10 @@ import React, { Component } from 'react';
 
 import './post-add-form.css';
 export default class PostAddForm extends Component {
-    constructor(props){
-        super(props);
-    }
     render(){
+    const {onAdd} = this.props;
     return (
-        <form className="bottom-panel d-flex">
+        <div className="bottom-panel d-flex">
             <input
                 type="text"
                 placeholder="О чем вы думаете сейчас?"
@@ -15,9 +13,9 @@ export default class PostAddForm extends Component {
             />
             <button
                 type="submit"
-                className="btn btn-outline-secondary">
+                className="btn btn-outline-secondary" onClick={() => onAdd('Hello')}>
                 Добавить</button>
-        </form>
+        </div>
     );
     }
 }
